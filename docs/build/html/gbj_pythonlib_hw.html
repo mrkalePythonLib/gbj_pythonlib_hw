@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gbj_pythonlib_hw package &mdash; gbj_pythonlib_hw 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> gbj_pythonlib_hw
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">gbj_pythonlib_hw package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-gbj_pythonlib_hw.cputemp">gbj_pythonlib_hw.cputemp module</a></li>
+<li><a class="reference internal" href="#module-gbj_pythonlib_hw.orangepi">gbj_pythonlib_hw.orangepi module</a></li>
+<li><a class="reference internal" href="#module-gbj_pythonlib_hw">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">gbj_pythonlib_hw</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>gbj_pythonlib_hw package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/gbj_pythonlib_hw.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gbj-pythonlib-hw-package">
+<h1>gbj_pythonlib_hw package<a class="headerlink" href="#gbj-pythonlib-hw-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gbj_pythonlib_hw.cputemp">
+<span id="gbj-pythonlib-hw-cputemp-module"></span><h2>gbj_pythonlib_hw.cputemp module<a class="headerlink" href="#module-gbj_pythonlib_hw.cputemp" title="Permalink to this headline">¶</a></h2>
+<p>Module for measuring CPU (SoC) temperature.</p>
+<dl class="class">
+<dt id="gbj_pythonlib_hw.cputemp.CpuTemperature">
+<em class="property">class </em><code class="descclassname">gbj_pythonlib_hw.cputemp.</code><code class="descname">CpuTemperature</code><a class="reference internal" href="_modules/gbj_pythonlib_hw/cputemp.html#CpuTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.cputemp.CpuTemperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Creating a CPU temperature manager.</p>
+<ul class="simple">
+<li>All temperature values are expressed in float centigrades.</li>
+<li>The microprocesor’s temperature sensor provides temperature resolution
+in millicentigrades, which is hardly the same measurement accuracy.</li>
+</ul>
+<dl class="method">
+<dt id="gbj_pythonlib_hw.cputemp.CpuTemperature.get_limit">
+<code class="descname">get_limit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/cputemp.html#CpuTemperature.get_limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.cputemp.CpuTemperature.get_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return CPU temperature limit or read it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.cputemp.CpuTemperature.get_temp">
+<code class="descname">get_temp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/cputemp.html#CpuTemperature.get_temp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.cputemp.CpuTemperature.get_temp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return CPU temperature measured recently in centigrades.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.cputemp.CpuTemperature.get_temp_perc">
+<code class="descname">get_temp_perc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/cputemp.html#CpuTemperature.get_temp_perc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.cputemp.CpuTemperature.get_temp_perc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return CPU temperature measured recently in percentage of limit.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.cputemp.CpuTemperature.measure">
+<code class="descname">measure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/cputemp.html#CpuTemperature.measure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.cputemp.CpuTemperature.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure and return current CPU temperature in centigrades.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.cputemp.CpuTemperature.measure_perc">
+<code class="descname">measure_perc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/cputemp.html#CpuTemperature.measure_perc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.cputemp.CpuTemperature.measure_perc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return current CPU temperature in percentage of limit.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.cputemp.CpuTemperature.perc2temp">
+<code class="descname">perc2temp</code><span class="sig-paren">(</span><em>percentage</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/cputemp.html#CpuTemperature.perc2temp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.cputemp.CpuTemperature.perc2temp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert percentage of limit to centigrades.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.cputemp.CpuTemperature.temp2perc">
+<code class="descname">temp2perc</code><span class="sig-paren">(</span><em>temperature</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/cputemp.html#CpuTemperature.temp2perc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.cputemp.CpuTemperature.temp2perc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert centigrades to percentage of limit.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbj_pythonlib_hw.orangepi">
+<span id="gbj-pythonlib-hw-orangepi-module"></span><h2>gbj_pythonlib_hw.orangepi module<a class="headerlink" href="#module-gbj_pythonlib_hw.orangepi" title="Permalink to this headline">¶</a></h2>
+<p>Module for controlling GPIOs of Orange Pi microcomputers.</p>
+<ul class="simple">
+<li>The library orangepi_PC_gpio_pyH3 should be installed:
+<a class="reference external" href="https://github.com/duxingkei33/orangepi_PC_gpio_pyH3">https://github.com/duxingkei33/orangepi_PC_gpio_pyH3</a></li>
+<li>For controlling in-built LEDs their control at the operating system level
+should be set to None.</li>
+</ul>
+<dl class="class">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne">
+<em class="property">class </em><code class="descclassname">gbj_pythonlib_hw.orangepi.</code><code class="descname">OrangePiOne</code><span class="sig-paren">(</span><em>pins=[{}], leds=[{}]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Creating a GPIO manager for microcomputer Orange Pi One.</p>
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.led_off">
+<code class="descname">led_off</code><span class="sig-paren">(</span><em>led</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.led_off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.led_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn LED off.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.led_on">
+<code class="descname">led_on</code><span class="sig-paren">(</span><em>led</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.led_on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.led_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn LED on.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.led_register">
+<code class="descname">led_register</code><span class="sig-paren">(</span><em>led</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.led_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.led_register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register LED.</p>
+<p>led – pyA20 port or connector identifier for an LED</p>
+<p>Exception NameError - if LED is unknown</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.led_remove">
+<code class="descname">led_remove</code><span class="sig-paren">(</span><em>led</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.led_remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.led_remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove LED for the registering list.</p>
+<p>led – pyA20 port or connector identifier for an LED</p>
+<p>Exception NameError - if LED is unknown</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.led_set">
+<code class="descname">led_set</code><span class="sig-paren">(</span><em>led</em>, <em>value=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.led_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.led_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn LED on or off.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.led_state">
+<code class="descname">led_state</code><span class="sig-paren">(</span><em>led</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.led_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.led_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return recent known LED state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.pin_off">
+<code class="descname">pin_off</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.pin_off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set output pin to logical 0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.pin_on">
+<code class="descname">pin_on</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.pin_on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set output pin to logical 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.pin_read">
+<code class="descname">pin_read</code><span class="sig-paren">(</span><em>pin</em>, <em>mode=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.pin_read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read input pin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.pin_register">
+<code class="descname">pin_register</code><span class="sig-paren">(</span><em>pin</em>, <em>mode=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.pin_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register pin and its mode.</p>
+<p>pin – pyA20 port or connector identifier for a pin
+mode – I/O mode of the pin [OUTPUT, INPUT]</p>
+<p>Exception NameError - if pin is unknown
+Exception TypeError - if pin is of unknown mode</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.pin_set">
+<code class="descname">pin_set</code><span class="sig-paren">(</span><em>pin</em>, <em>value=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.pin_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set output pin to logical value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.pin_state">
+<code class="descname">pin_state</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.pin_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return recent pin state.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbj_pythonlib_hw">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gbj_pythonlib_hw" title="Permalink to this headline">¶</a></h2>
+<p>Initial module importing all library modules of the package.</p>
+<ul class="simple">
+<li>cputemp</li>
+<li>orangepi</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Libor Gabaj.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

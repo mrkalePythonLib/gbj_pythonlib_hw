@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gbj_pythonlib_hw.orangepi &mdash; gbj_pythonlib_hw 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbj_pythonlib_hw
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbj_pythonlib_hw</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>gbj_pythonlib_hw.orangepi</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gbj_pythonlib_hw.orangepi</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python2</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Module for controlling GPIOs of Orange Pi microcomputers.</span>
+
+<span class="sd">- The library orangepi_PC_gpio_pyH3 should be installed:</span>
+<span class="sd">  https://github.com/duxingkei33/orangepi_PC_gpio_pyH3</span>
+<span class="sd">- For controlling in-built LEDs their control at the operating system level</span>
+<span class="sd">  should be set to None.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.3.0&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s2">&quot;Development&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Libor Gabaj&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 2018, &quot;</span> <span class="o">+</span> <span class="n">__author__</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://github.com/duxingkei33&quot;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="n">__author__</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;libor.gabaj@gmail.com&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pyA20.gpio</span> <span class="k">import</span> <span class="n">gpio</span>
+<span class="kn">from</span> <span class="nn">pyA20.gpio</span> <span class="k">import</span> <span class="n">port</span>
+<span class="kn">from</span> <span class="nn">pyA20.gpio</span> <span class="k">import</span> <span class="n">connector</span>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># Module constants</span>
+<span class="c1">###############################################################################</span>
+<span class="n">INPUT</span> <span class="o">=</span> <span class="n">gpio</span><span class="o">.</span><span class="n">INPUT</span>
+<span class="n">OUTPUT</span> <span class="o">=</span> <span class="n">gpio</span><span class="o">.</span><span class="n">OUTPUT</span>
+<span class="n">HIGH</span> <span class="o">=</span> <span class="n">gpio</span><span class="o">.</span><span class="n">HIGH</span>
+<span class="n">LOW</span> <span class="o">=</span> <span class="n">gpio</span><span class="o">.</span><span class="n">LOW</span>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># SoC parameters</span>
+<span class="c1">###############################################################################</span>
+<span class="n">PERC_MAXTEMP_ON</span> <span class="o">=</span> <span class="mf">85.0</span>  <span class="c1"># Fan ON default percentage of maximal temperature</span>
+<span class="n">PERC_MAXTEMP_OFF</span> <span class="o">=</span> <span class="mf">75.0</span>  <span class="c1"># Fan OFF default percentage of maximal temperature</span>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># Classes</span>
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="OrangePiOne"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne">[docs]</a><span class="k">class</span> <span class="nc">OrangePiOne</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creating a GPIO manager for microcomputer Orange Pi One.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pins</span><span class="o">=</span><span class="p">[{}],</span> <span class="n">leds</span><span class="o">=</span><span class="p">[{}]):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize instance object - constructor.</span>
+
+<span class="sd">        Positional arguments:</span>
+<span class="sd">        ---------------------</span>
+<span class="sd">        pins -- list of pins dictionaries to be registered</span>
+<span class="sd">                [{pin: mode}], e.g.,</span>
+<span class="sd">                [{&quot;PA13&quot;: gbj_orangepi.OUTPUT}, {&quot;PA13&quot;: gbj_orangepi.INPUT}]</span>
+<span class="sd">        leds -- list of LEDs to be registered</span>
+<span class="sd">                [led, led], e.g., [&quot;STATUS_LED&quot;, &quot;POWER_LED&quot;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">__version__</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Instance of </span><span class="si">%s</span><span class="s2"> created&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="n">gpio</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pins</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Register pins</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pins</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">pins</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pins</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pin_def</span> <span class="ow">in</span> <span class="n">pins</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pin</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">pin_def</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pin_register</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+        <span class="c1"># Register LEDs</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">leds</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">leds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">leds</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">led_def</span> <span class="ow">in</span> <span class="n">leds</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">led</span> <span class="ow">in</span> <span class="n">led_def</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">led_register</span><span class="p">(</span><span class="n">led</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represent instance object as a string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Pins </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_pin_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">HIGH</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set output pin to logical 0 or 1.</span>
+
+<span class="sd">        Positional arguments:</span>
+<span class="sd">        ---------------------</span>
+<span class="sd">        pin -- registered pin identifier</span>
+<span class="sd">        value -- logical value [gpio.HIGH, gpio.LOW]</span>
+<span class="sd">        mode -- mode of a pin [gpio.OUTPUT, gpio.INPUT]</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        Read pin value (binary state) - if pin has input mode</span>
+<span class="sd">        Exception NameError - if pin is not registered</span>
+<span class="sd">        Exception TypeError - if pin is not of output mode</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">present</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pin_record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">pin_record</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">pin</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pin_record</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">mode</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">gpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">:</span>
+                        <span class="n">gpio</span><span class="o">.</span><span class="n">setcfg</span><span class="p">(</span><span class="n">pin_record</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">],</span> <span class="n">gpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+                        <span class="n">gpio</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pin_record</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">gpio</span><span class="o">.</span><span class="n">INPUT</span><span class="p">:</span>
+                        <span class="n">gpio</span><span class="o">.</span><span class="n">setcfg</span><span class="p">(</span><span class="n">pin_record</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">],</span> <span class="n">gpio</span><span class="o">.</span><span class="n">INPUT</span><span class="p">)</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">gpio</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">pin_record</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">])</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                        <span class="k">return</span> <span class="n">value</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Oposite mode of pin </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+                <span class="n">present</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">present</span><span class="p">:</span>
+            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Non-registered pin </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OrangePiOne.pin_register"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_register">[docs]</a>    <span class="k">def</span> <span class="nf">pin_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">OUTPUT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register pin and its mode.</span>
+
+<span class="sd">        Positional arguments:</span>
+<span class="sd">        ---------------------</span>
+<span class="sd">        pin -- pyA20 port or connector identifier for a pin</span>
+<span class="sd">        mode -- I/O mode of the pin [OUTPUT, INPUT]</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        Exception NameError - if pin is unknown</span>
+<span class="sd">        Exception TypeError - if pin is of unknown mode</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Determine type and check pin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Registering pin </span><span class="si">%s</span><span class="s2"> with mode </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pin</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">port</span><span class="p">):</span>
+            <span class="n">port_num</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">pin</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">connector</span><span class="p">):</span>
+            <span class="n">port_num</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">connector</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Unknown pin </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+        <span class="c1"># Check pin mode</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">OUTPUT</span><span class="p">,</span> <span class="n">INPUT</span><span class="p">]:</span>
+            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Unknown mode </span><span class="si">{}</span><span class="s2"> of pin </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+
+        <span class="c1"># Find existing pin, remove or update it</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pin_record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">pin_record</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">pin</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removed pin </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pin_record</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updated pin </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
+                <span class="n">new</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+        <span class="c1"># Create new pin</span>
+        <span class="k">if</span> <span class="n">new</span><span class="p">:</span>
+            <span class="n">pin_record</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span>
+                <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="n">port_num</span><span class="p">,</span>
+                <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">mode</span><span class="p">,</span>
+                <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="n">gpio</span><span class="o">.</span><span class="n">LOW</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pin_record</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Registered pin </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.pin_set"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_set">[docs]</a>    <span class="k">def</span> <span class="nf">pin_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">HIGH</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set output pin to logical value.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pin_process</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.pin_on"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_on">[docs]</a>    <span class="k">def</span> <span class="nf">pin_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set output pin to logical 1.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pin_set</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">HIGH</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.pin_off"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_off">[docs]</a>    <span class="k">def</span> <span class="nf">pin_off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set output pin to logical 0.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pin_set</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">LOW</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.pin_read"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_read">[docs]</a>    <span class="k">def</span> <span class="nf">pin_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">INPUT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read input pin.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pin_process</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">INPUT</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.pin_state"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_state">[docs]</a>    <span class="k">def</span> <span class="nf">pin_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return recent pin state.&quot;&quot;&quot;</span>
+        <span class="n">pin_record</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pin_def</span><span class="p">:</span> <span class="n">pin_def</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">pin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pin_record</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pin_record</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;state&quot;</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">_led_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">led</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">HIGH</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Turn signalling LED on or off.</span>
+
+<span class="sd">        Positional arguments:</span>
+<span class="sd">        ---------------------</span>
+<span class="sd">        led -- registered LED identifier</span>
+<span class="sd">        value -- logical value [gpio.HIGH, gpio.LOW]</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        Exception NameError - if LED is not registered</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">present</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">led_record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_leds</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">led_record</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">led</span><span class="p">:</span>
+                <span class="n">gpio</span><span class="o">.</span><span class="n">setcfg</span><span class="p">(</span><span class="n">led_record</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">],</span> <span class="n">gpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+                <span class="n">gpio</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">led_record</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_leds</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="n">present</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">present</span><span class="p">:</span>
+            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Non-registered LED </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">led</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OrangePiOne.led_register"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_register">[docs]</a>    <span class="k">def</span> <span class="nf">led_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">led</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register LED.</span>
+
+<span class="sd">        Positional arguments:</span>
+<span class="sd">        ---------------------</span>
+<span class="sd">        led -- pyA20 port or connector identifier for an LED</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        Exception NameError - if LED is unknown</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check LED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Registering LED </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">led</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">led</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">port</span><span class="p">)</span> <span class="ow">and</span> <span class="n">led</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;STATUS_LED&quot;</span><span class="p">,</span> <span class="s2">&quot;POWER_LED&quot;</span><span class="p">]:</span>
+            <span class="n">port_num</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">led</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">led</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">connector</span><span class="p">)</span> <span class="ow">and</span> <span class="n">led</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;LEDp1&quot;</span><span class="p">,</span> <span class="s2">&quot;LEDp2&quot;</span><span class="p">]:</span>
+            <span class="n">port_num</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">connector</span><span class="p">,</span> <span class="n">led</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Unknown LED </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">led</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+
+        <span class="c1"># Update existing LED</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">led_record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_leds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">led_record</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">led</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updated LED </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">led</span><span class="p">)</span>
+                <span class="n">new</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+        <span class="c1"># Create new LED</span>
+        <span class="k">if</span> <span class="n">new</span><span class="p">:</span>
+            <span class="n">led_record</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">led</span><span class="p">,</span>
+                <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="n">port_num</span><span class="p">,</span>
+                <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_leds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">led_record</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Created LED </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">led</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.led_remove"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_remove">[docs]</a>    <span class="k">def</span> <span class="nf">led_remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">led</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove LED for the registering list.</span>
+
+<span class="sd">        Positional arguments:</span>
+<span class="sd">        ---------------------</span>
+<span class="sd">        led -- pyA20 port or connector identifier for an LED</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        Exception NameError - if LED is unknown</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check LED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing LED </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">led</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">led</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">port</span><span class="p">)</span> <span class="ow">and</span> <span class="n">led</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;STATUS_LED&quot;</span><span class="p">,</span> <span class="s2">&quot;POWER_LED&quot;</span><span class="p">]:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">led</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">connector</span><span class="p">)</span> <span class="ow">and</span> <span class="n">led</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;LEDp1&quot;</span><span class="p">,</span> <span class="s2">&quot;LEDp2&quot;</span><span class="p">]:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="c1"># Remove existing LED</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">led_record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_leds</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">led_record</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">led</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pins</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updated LED </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">led</span><span class="p">)</span>
+                <span class="k">return</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.led_set"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_set">[docs]</a>    <span class="k">def</span> <span class="nf">led_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">led</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">HIGH</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Turn LED on or off.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_led_process</span><span class="p">(</span><span class="n">led</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.led_on"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_on">[docs]</a>    <span class="k">def</span> <span class="nf">led_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">led</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Turn LED on.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led_set</span><span class="p">(</span><span class="n">led</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">HIGH</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.led_off"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_off">[docs]</a>    <span class="k">def</span> <span class="nf">led_off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">led</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Turn LED off.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led_set</span><span class="p">(</span><span class="n">led</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">gpio</span><span class="o">.</span><span class="n">LOW</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.led_state"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_state">[docs]</a>    <span class="k">def</span> <span class="nf">led_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">led</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return recent known LED state.&quot;&quot;&quot;</span>
+        <span class="n">led_record</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">led_def</span><span class="p">:</span> <span class="n">led_def</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">led</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_leds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">led_record</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">led_record</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;state&quot;</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Libor Gabaj.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

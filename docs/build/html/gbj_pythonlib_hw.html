@@ -353,6 +353,52 @@ with commands:</p>
 </li>
 </ul>
 <dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.is_pin_off">
+<code class="descname">is_pin_off</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.is_pin_off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.is_pin_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return flag about pin state LOW.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pin</strong> (<em>str</em>) – Name of a pin in form either <cite>port</cite> or <cite>connector</cite>.
+<em>The argument is mandatory and has no default value.</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>flag_high</strong> – Logical flag about pin state HIGH.
+True if HIGH or False for LOW.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NameError</span></code> – Pin name is defined neither among ports nor connectors.
+Error message included to the exception.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.is_pin_on">
+<code class="descname">is_pin_on</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.is_pin_on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.is_pin_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return flag about pin state HIGH.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pin</strong> (<em>str</em>) – Name of a pin in form either <cite>port</cite> or <cite>connector</cite>.
+<em>The argument is mandatory and has no default value.</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>flag_high</strong> – Logical flag about pin state HIGH.
+True if HIGH or False for LOW.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NameError</span></code> – Pin name is defined neither among ports nor connectors.
+Error message included to the exception.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gbj_pythonlib_hw.orangepi.OrangePiOne.pin_off">
 <code class="descname">pin_off</code><span class="sig-paren">(</span><em>pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbj_pythonlib_hw/orangepi.html#OrangePiOne.pin_off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_off" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set pin as OUTPUT and to LOW.</p>

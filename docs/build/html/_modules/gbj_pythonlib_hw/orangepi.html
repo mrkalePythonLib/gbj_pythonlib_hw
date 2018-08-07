@@ -210,6 +210,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the class instance - constructor.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">__version__</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Instance of </span><span class="si">%s</span><span class="s2"> created&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="n">gpio</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
@@ -366,7 +367,57 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">port_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_pin_port</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">gpio</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">port_num</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">value</span></div></div>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.is_pin_on"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.is_pin_on">[docs]</a>    <span class="k">def</span> <span class="nf">is_pin_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return flag about pin state HIGH.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        pin : str</span>
+<span class="sd">            Name of a pin in form either `port` or `connector`.</span>
+<span class="sd">            *The argument is mandatory and has no default value.*</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        flag_high : bool</span>
+<span class="sd">            Logical flag about pin state HIGH.</span>
+<span class="sd">            True if HIGH or False for LOW.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NameError</span>
+<span class="sd">            Pin name is defined neither among ports nor connectors.</span>
+<span class="sd">            Error message included to the exception.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">port_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_pin_port</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">gpio</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">port_num</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="n">gpio</span><span class="o">.</span><span class="n">HIGH</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrangePiOne.is_pin_off"><a class="viewcode-back" href="../../gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.is_pin_off">[docs]</a>    <span class="k">def</span> <span class="nf">is_pin_off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return flag about pin state LOW.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        pin : str</span>
+<span class="sd">            Name of a pin in form either `port` or `connector`.</span>
+<span class="sd">            *The argument is mandatory and has no default value.*</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        flag_high : bool</span>
+<span class="sd">            Logical flag about pin state HIGH.</span>
+<span class="sd">            True if HIGH or False for LOW.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NameError</span>
+<span class="sd">            Pin name is defined neither among ports nor connectors.</span>
+<span class="sd">            Error message included to the exception.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_pin_on</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

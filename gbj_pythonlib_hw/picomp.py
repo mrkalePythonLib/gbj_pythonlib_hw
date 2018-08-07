@@ -45,7 +45,6 @@ class PiComputer(object):
             "/sys/class/thermal/thermal_zone0/trip_point_0_temp"
             )
         self._logger.debug("Temperature limit %s°C", self._temp_limit)
-        self.measure()
 
     def __str__(self):
         """Represent instance object as a string."""
@@ -100,7 +99,7 @@ class PiComputer(object):
 
         """
         try:
-            perc = temperature / self._temp_limit * 100.0
+            perc = temperature / self.get_temperature_limit() * 100.0
         except TypeError:
             perc = None
         return perc
@@ -122,7 +121,7 @@ class PiComputer(object):
 
         """
         try:
-            temp = percentage * self._temp_limit / 100.0
+            temp = percentage * self.get_temperature_limit() / 100.0
         except TypeError:
             temp = None
         return temp

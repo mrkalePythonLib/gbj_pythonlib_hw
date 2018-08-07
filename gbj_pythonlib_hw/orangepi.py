@@ -65,6 +65,7 @@ class OrangePiOne(PiComputer):
 
     def __init__(self):
         """Create the class instance - constructor."""
+        super(type(self), self).__init__()
         self._logger = logging.getLogger(" ".join([__name__, __version__]))
         self._logger.debug("Instance of %s created", self.__class__.__name__)
         gpio.init()
@@ -222,3 +223,53 @@ class OrangePiOne(PiComputer):
         port_num = self._convert_pin_port(pin)
         value = gpio.input(port_num)
         return value
+
+    def is_pin_on(self, pin):
+        """Return flag about pin state HIGH.
+
+        Arguments
+        ---------
+        pin : str
+            Name of a pin in form either `port` or `connector`.
+            *The argument is mandatory and has no default value.*
+
+        Returns
+        -------
+        flag_high : bool
+            Logical flag about pin state HIGH.
+            True if HIGH or False for LOW.
+
+        Raises
+        ------
+        NameError
+            Pin name is defined neither among ports nor connectors.
+            Error message included to the exception.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        value = gpio.input(port_num)
+        return (value == gpio.HIGH)
+
+    def is_pin_off(self, pin):
+        """Return flag about pin state LOW.
+
+        Arguments
+        ---------
+        pin : str
+            Name of a pin in form either `port` or `connector`.
+            *The argument is mandatory and has no default value.*
+
+        Returns
+        -------
+        flag_high : bool
+            Logical flag about pin state HIGH.
+            True if HIGH or False for LOW.
+
+        Raises
+        ------
+        NameError
+            Pin name is defined neither among ports nor connectors.
+            Error message included to the exception.
+
+        """
+        return not self.is_pin_on(pin)

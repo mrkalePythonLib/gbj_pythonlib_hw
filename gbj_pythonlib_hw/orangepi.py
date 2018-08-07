@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Module for controlling GPIOs of Orange Pi microcomputers.
 
-- The library orangepi_PC_gpio_pyH3 should be installed:
+- The library **orangepi_PC_gpio_pyH3** should be installed:
   https://github.com/duxingkei33/orangepi_PC_gpio_pyH3
 - For controlling in-built LEDs their control at the operating system level
   should be set to None.
@@ -18,122 +18,84 @@ __email__ = "libor.gabaj@gmail.com"
 
 
 import logging
+from picomp import PiComputer
 from pyA20.gpio import gpio
 from pyA20.gpio import port
 from pyA20.gpio import connector
 
 
 ###############################################################################
-# Module constants
-###############################################################################
-INPUT = gpio.INPUT
-OUTPUT = gpio.OUTPUT
-HIGH = gpio.HIGH
-LOW = gpio.LOW
-
-
-###############################################################################
-# SoC parameters
-###############################################################################
-PERC_MAXTEMP_ON = 85.0  # Fan ON default percentage of maximal temperature
-PERC_MAXTEMP_OFF = 75.0  # Fan OFF default percentage of maximal temperature
-
-
-###############################################################################
 # Classes
 ###############################################################################
-class OrangePiOne(object):
-    """Creating a GPIO manager for microcomputer Orange Pi One."""
+class OrangePiOne(PiComputer):
+    """Creating a GPIO manager for microcomputer ``Orange Pi One``.
 
-    def __init__(self, pins=[{}], leds=[{}]):
-        """Initialize instance object - constructor.
+    Notes
+    -----
+    - GPIO pins including system LEDs are identified for the sake of this class
+      by name of its attributes defined in the library.
+    - Each pin can be named in the form as a ``port`` or as a ``connector``.
+      Each form has its own list of available pin names, which can be obtained
+      with commands::
 
-        Positional arguments:
-        ---------------------
-        pins -- list of pins dictionaries to be registered
-                [{pin: mode}], e.g.,
-                [{"PA13": gbj_orangepi.OUTPUT}, {"PA13": gbj_orangepi.INPUT}]
-        leds -- list of LEDs to be registered
-                [led, led], e.g., ["STATUS_LED", "POWER_LED"]
-        """
+          dir(port)
+          dir(connector)
+
+    - List of available ports for GPIO pins:
+      ``PA0``, ``PA1``, ``PA10``, ``PA11``, ``PA12``, ``PA13``, ``PA14``,
+      ``PA18``, ``PA19``, ``PA2``, ``PA20``, ``PA21``, ``PA3``, ``PA6``,
+      ``PA7``, ``PA8``, ``PA9``, ``PC0``, ``PC1``, ``PC2``, ``PC3``, ``PC4``,
+      ``PC7``, ``PD14``, ``PG6``, ``PG7``, ``PG8``, ``PG9``
+
+    - List of available ports for system LEDS:
+      ``POWER_LED``, ``STATUS_LED``
+
+    - List of available connectors for GPIO pins:
+      ``gpio1p10``, ``gpio1p11``, ``gpio1p12``, ``gpio1p13``, ``gpio1p15``,
+      ``gpio1p16``, ``gpio1p18``, ``gpio1p19``, ``gpio1p21``, ``gpio1p22``,
+      ``gpio1p23``, ``gpio1p24``, ``gpio1p26``, ``gpio1p27``, ``gpio1p28``,
+      ``gpio1p29``, ``gpio1p3``, ``gpio1p31``, ``gpio1p32``, ``gpio1p33``,
+      ``gpio1p35``, ``gpio1p36``, ``gpio1p37``, ``gpio1p38``, ``gpio1p40``,
+      ``gpio1p5``, ``gpio1p7``, ``gpio1p8``
+
+    - List of available connectors for system LEDS:
+      ``LEDp1``, ``LEDp2``
+
+    """
+
+    def __init__(self):
+        """Create the class instance - constructor."""
         self._logger = logging.getLogger(" ".join([__name__, __version__]))
         self._logger.debug("Instance of %s created", self.__class__.__name__)
         gpio.init()
-        self._pins = []
-        self._leds = []
-        # Register pins
-        if not isinstance(pins, list):
-            pins = list(pins)
-        for pin_def in pins:
-            for pin, mode in pin_def.iteritems():
-                self.pin_register(pin, mode)
-        # Register LEDs
-        if not isinstance(leds, list):
-            leds = list(leds)
-        for led_def in leds:
-            for led in led_def:
-                self.led_register(led)
 
     def __str__(self):
         """Represent instance object as a string."""
-        return "Pins {}".format(len(self._pins))
+        return self.__class__.__name__
 
-    def _pin_process(self, pin, value=gpio.HIGH, mode=gpio.OUTPUT):
-        """Set output pin to logical 0 or 1.
+    def _convert_pin_port(self, pin):
+        """Convert pin name to port number.
 
-        Positional arguments:
-        ---------------------
-        pin -- registered pin identifier
-        value -- logical value [gpio.HIGH, gpio.LOW]
-        mode -- mode of a pin [gpio.OUTPUT, gpio.INPUT]
+        Arguments
+        ---------
+        pin : str
+            Name of a pin in form of either ``port`` or ``connector``.
+            *The argument is mandatory and has no default value.*
 
-        Returns:
-        --------
-        Read pin value (binary state) - if pin has input mode
-        Exception NameError - if pin is not registered
-        Exception TypeError - if pin is not of output mode
+        Returns
+        -------
+        portnum : int
+            SoC port number of the pin.
 
-        """
-        present = False
-        for i, pin_record in enumerate(self._pins):
-            if pin_record["name"] == pin:
-                if pin_record["mode"] == mode:
-                    if mode == gpio.OUTPUT:
-                        gpio.setcfg(pin_record["port"], gpio.OUTPUT)
-                        gpio.output(pin_record["port"], value)
-                        self._pins[i]["state"] = value
-                    elif mode == gpio.INPUT:
-                        gpio.setcfg(pin_record["port"], gpio.INPUT)
-                        value = gpio.input(pin_record["port"])
-                        self._pins[i]["state"] = value
-                        return value
-                else:
-                    errmsg = "Oposite mode of pin {}".format(pin)
-                    self._logger.error(errmsg)
-                    raise TypeError(errmsg)
-                present = True
-                break
-        if not present:
-            errmsg = "Non-registered pin {}".format(pin)
-            self._logger.error(errmsg)
-            raise NameError(errmsg)
-
-    def pin_register(self, pin, mode=OUTPUT):
-        """Register pin and its mode.
-
-        Positional arguments:
-        ---------------------
-        pin -- pyA20 port or connector identifier for a pin
-        mode -- I/O mode of the pin [OUTPUT, INPUT]
-
-        Returns:
-        --------
-        Exception NameError - if pin is unknown
-        Exception TypeError - if pin is of unknown mode
+        Raises
+        ------
+        NameError
+            Pin name is defined neither among ports nor connectors of
+            the system. Usually the pin name is a typo or belongs to another
+            microcomputer.
+            Exception is raised with error message.
 
         """
-        # Determine type and check pin
-        self._logger.debug("Registering pin %s with mode %s", pin, mode)
         if pin in dir(port):
             port_num = getattr(port, pin)
         elif pin in dir(connector):
@@ -142,168 +104,121 @@ class OrangePiOne(object):
             errmsg = "Unknown pin {}".format(pin)
             self._logger.error(errmsg)
             raise NameError(errmsg)
-        # Check pin mode
-        if mode is not None and mode not in [OUTPUT, INPUT]:
-            errmsg = "Unknown mode {} of pin {}".format(mode, pin)
-            self._logger.error(errmsg)
-            raise TypeError(errmsg)
-
-        # Find existing pin, remove or update it
-        new = True
-        for i, pin_record in enumerate(self._pins):
-            if pin_record["name"] == pin:
-                if mode is None:
-                    self._pins.pop(i)
-                    self._logger.debug("Removed pin %s", pin)
-                else:
-                    pin_record["mode"] = mode
-                    self._logger.debug("Updated pin %s", pin)
-                new = False
-                break
-        # Create new pin
-        if new:
-            pin_record = {
-                "name": pin,
-                "port": port_num,
-                "mode": mode,
-                "state": gpio.LOW,
-            }
-            self._pins.append(pin_record)
-            self._logger.debug("Registered pin %s", pin)
-
-    def pin_set(self, pin, value=gpio.HIGH):
-        """Set output pin to logical value."""
-        self._pin_process(pin, value, mode=gpio.OUTPUT)
+        self._logger.debug("Converted pin %s to port %s", pin, port_num)
+        return port_num
 
     def pin_on(self, pin):
-        """Set output pin to logical 1."""
-        self.pin_set(pin, value=gpio.HIGH)
+        """Set pin as OUTPUT and to HIGH.
+
+        Arguments
+        ---------
+        pin : str
+            Name of a pin in form either `port` or `connector`.
+            *The argument is mandatory and has no default value.*
+
+        Raises
+        ------
+        NameError
+            Pin name is defined neither among ports nor connectors.
+            Error message included to the exception.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        gpio.setcfg(port_num, gpio.OUTPUT)
+        gpio.output(port_num, gpio.HIGH)
 
     def pin_off(self, pin):
-        """Set output pin to logical 0."""
-        self.pin_set(pin, value=gpio.LOW)
+        """Set pin as OUTPUT and to LOW.
+
+        Arguments
+        ---------
+        pin : str
+            Name of a pin in form either `port` or `connector`.
+            *The argument is mandatory and has no default value.*
+
+        Raises
+        ------
+        NameError
+            Pin name is defined neither among ports nor connectors.
+            Error message included to the exception.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        gpio.setcfg(port_num, gpio.OUTPUT)
+        gpio.output(port_num, gpio.LOW)
+
+    def pin_toggle(self, pin):
+        """Set pin as OUTPUT and invert its state.
+
+        Arguments
+        ---------
+        pin : str
+            Name of a pin in form either `port` or `connector`.
+            *The argument is mandatory and has no default value.*
+
+        Raises
+        ------
+        NameError
+            Pin name is defined neither among ports nor connectors.
+            Error message included to the exception.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        port_state = gpio.input(port_num)
+        if port_state == gpio.HIGH:
+            port_state = gpio.LOW
+        else:
+            port_state = gpio.HIGH
+        gpio.setcfg(port_num, gpio.OUTPUT)
+        gpio.output(port_num, port_state)
 
     def pin_read(self, pin, mode=gpio.INPUT):
-        """Read input pin."""
-        return self._pin_process(pin, mode=gpio.INPUT)
+        """Set pin as INTPUT and read its state.
+
+        Arguments
+        ---------
+        pin : str
+            Name of a pin in form either `port` or `connector`.
+            *The argument is mandatory and has no default value.*
+
+        Returns
+        -------
+        pin_state : {gpio.HIGH, gpio.LOW}
+            Current state of the pin.
+
+        Raises
+        ------
+        NameError
+            Pin name is defined neither among ports nor connectors.
+            Error message included to the exception.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        gpio.setcfg(port_num, gpio.INTPUT)
+        value = gpio.input(port_num)
+        return value
 
     def pin_state(self, pin):
-        """Return recent pin state."""
-        pin_record = filter(lambda pin_def: pin_def["name"] == pin, self._pins)
-        if pin_record is None:
-            return None
-        else:
-            return pin_record[0]["state"]
+        """Return pin state without changing it mode.
 
-    def _led_process(self, led, value=gpio.HIGH):
-        """Turn signalling LED on or off.
+        Arguments
+        ---------
+        pin : str
+            Name of a pin in form either `port` or `connector`.
+            *The argument is mandatory and has no default value.*
 
-        Positional arguments:
-        ---------------------
-        led -- registered LED identifier
-        value -- logical value [gpio.HIGH, gpio.LOW]
+        Returns
+        -------
+        pin_state : {gpio.HIGH, gpio.LOW}
+            Current state of the pin.
 
-        Returns:
-        --------
-        Exception NameError - if LED is not registered
-
-        """
-        present = False
-        for i, led_record in enumerate(self._leds):
-            if led_record["name"] == led:
-                gpio.setcfg(led_record["port"], gpio.OUTPUT)
-                gpio.output(led_record["port"], value)
-                self._leds[i]["state"] = value
-                present = True
-                break
-        if not present:
-            errmsg = "Non-registered LED {}".format(led)
-            self._logger.error(errmsg)
-            raise NameError(errmsg)
-
-    def led_register(self, led):
-        """Register LED.
-
-        Positional arguments:
-        ---------------------
-        led -- pyA20 port or connector identifier for an LED
-
-        Returns:
-        --------
-        Exception NameError - if LED is unknown
+        Raises
+        ------
+        NameError
+            Pin name is defined neither among ports nor connectors.
+            Error message included to the exception.
 
         """
-        # Check LED
-        self._logger.debug("Registering LED %s", led)
-        if led in dir(port) and led in ["STATUS_LED", "POWER_LED"]:
-            port_num = getattr(port, led)
-        elif led in dir(connector) and led in ["LEDp1", "LEDp2"]:
-            port_num = getattr(connector, led)
-        else:
-            errmsg = "Unknown LED {}".format(led)
-            self._logger.error(errmsg)
-            raise NameError(errmsg)
-
-        # Update existing LED
-        new = True
-        for led_record in self._leds:
-            if led_record["name"] == led:
-                self._logger.debug("Updated LED %s", led)
-                new = False
-                break
-        # Create new LED
-        if new:
-            led_record = {
-                "name": led,
-                "port": port_num,
-                "state": None,
-            }
-            self._leds.append(led_record)
-            self._logger.debug("Created LED %s", led)
-
-    def led_remove(self, led):
-        """Remove LED for the registering list.
-
-        Positional arguments:
-        ---------------------
-        led -- pyA20 port or connector identifier for an LED
-
-        Returns:
-        --------
-        Exception NameError - if LED is unknown
-
-        """
-        # Check LED
-        self._logger.debug("Removing LED %s", led)
-        if led in dir(port) and led in ["STATUS_LED", "POWER_LED"]:
-            pass
-        elif led in dir(connector) and led in ["LEDp1", "LEDp2"]:
-            pass
-        else:
-            return
-        # Remove existing LED
-        for i, led_record in enumerate(self._leds):
-            if led_record["name"] == led:
-                self._pins.pop(i)
-                self._logger.debug("Updated LED %s", led)
-                return
-
-    def led_set(self, led, value=gpio.HIGH):
-        """Turn LED on or off."""
-        self._led_process(led, value)
-
-    def led_on(self, led):
-        """Turn LED on."""
-        self.led_set(led, value=gpio.HIGH)
-
-    def led_off(self, led):
-        """Turn LED off."""
-        self.led_set(led, value=gpio.LOW)
-
-    def led_state(self, led):
-        """Return recent known LED state."""
-        led_record = filter(lambda led_def: led_def["name"] == led, self._leds)
-        if led_record is None:
-            return None
-        else:
-            return led_record[0]["state"]
+        port_num = self._convert_pin_port(pin)
+        value = gpio.input(port_num)
+        return value

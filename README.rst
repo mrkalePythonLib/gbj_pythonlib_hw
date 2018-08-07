@@ -13,8 +13,8 @@ The documentation to each module of the package is located in the folder
 Modules in package
 ==================
 
-**cputemp**
-  Measuring SoC temperature of microcomputers.
+**picomp**
+  Common fuctionalities of microcomputers of the class Pi.
 
 **orangepi**
-  Utilizing Pi microcomputers.
+  Control GPIOs and system LEDs of Orange Pi microcomputers.

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """Initial module importing all library modules of the package.
 
-- cputemp
+- picomp
 - orangepi
 
 """
-import cputemp as cputemp
+import picomp as picomp
 import orangepi as orangepi

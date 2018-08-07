@@ -77,8 +77,12 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">gbj_pythonlib_hw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change log</a></li>
+</ul>
+
             
           
         </div>
@@ -145,17 +149,19 @@
 <div class="genindex-jumpbox">
  <a href="#C"><strong>C</strong></a>
  | <a href="#G"><strong>G</strong></a>
- | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
- | <a href="#T"><strong>T</strong></a>
  
 </div>
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.cputemp.CpuTemperature">CpuTemperature (class in gbj_pythonlib_hw.cputemp)</a>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.picomp.PiComputer.convert_percentage_temperature">convert_percentage_temperature() (gbj_pythonlib_hw.picomp.PiComputer method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.picomp.PiComputer.convert_temperature_percentage">convert_temperature_percentage() (gbj_pythonlib_hw.picomp.PiComputer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -165,37 +171,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gbj_pythonlib_hw.html#module-gbj_pythonlib_hw">gbj_pythonlib_hw (module)</a>
 </li>
-      <li><a href="gbj_pythonlib_hw.html#module-gbj_pythonlib_hw.cputemp">gbj_pythonlib_hw.cputemp (module)</a>
-</li>
       <li><a href="gbj_pythonlib_hw.html#module-gbj_pythonlib_hw.orangepi">gbj_pythonlib_hw.orangepi (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.cputemp.CpuTemperature.get_limit">get_limit() (gbj_pythonlib_hw.cputemp.CpuTemperature method)</a>
-</li>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.cputemp.CpuTemperature.get_temp">get_temp() (gbj_pythonlib_hw.cputemp.CpuTemperature method)</a>
-</li>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.cputemp.CpuTemperature.get_temp_perc">get_temp_perc() (gbj_pythonlib_hw.cputemp.CpuTemperature method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="L">L</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_off">led_off() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
-</li>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_on">led_on() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
-</li>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_register">led_register() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
+      <li><a href="gbj_pythonlib_hw.html#module-gbj_pythonlib_hw.picomp">gbj_pythonlib_hw.picomp (module)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_remove">led_remove() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.picomp.PiComputer.get_temperature">get_temperature() (gbj_pythonlib_hw.picomp.PiComputer method)</a>
 </li>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_set">led_set() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.picomp.PiComputer.get_temperature_limit">get_temperature_limit() (gbj_pythonlib_hw.picomp.PiComputer method)</a>
 </li>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.led_state">led_state() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.picomp.PiComputer.get_temperature_percentage">get_temperature_percentage() (gbj_pythonlib_hw.picomp.PiComputer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -203,11 +189,11 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.cputemp.CpuTemperature.measure">measure() (gbj_pythonlib_hw.cputemp.CpuTemperature method)</a>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.picomp.PiComputer.measure_temperature">measure_temperature() (gbj_pythonlib_hw.picomp.PiComputer method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.cputemp.CpuTemperature.measure_perc">measure_perc() (gbj_pythonlib_hw.cputemp.CpuTemperature method)</a>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.picomp.PiComputer.measure_temperature_percentage">measure_temperature_percentage() (gbj_pythonlib_hw.picomp.PiComputer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -223,7 +209,7 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.cputemp.CpuTemperature.perc2temp">perc2temp() (gbj_pythonlib_hw.cputemp.CpuTemperature method)</a>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.picomp.PiComputer">PiComputer (class in gbj_pythonlib_hw.picomp)</a>
 </li>
       <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_off">pin_off() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
 </li>
@@ -233,19 +219,9 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_read">pin_read() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
 </li>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_register">pin_register() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
-</li>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_set">pin_set() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
-</li>
       <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_state">pin_state() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
 </li>
-  </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.cputemp.CpuTemperature.temp2perc">temp2perc() (gbj_pythonlib_hw.cputemp.CpuTemperature method)</a>
+      <li><a href="gbj_pythonlib_hw.html#gbj_pythonlib_hw.orangepi.OrangePiOne.pin_toggle">pin_toggle() (gbj_pythonlib_hw.orangepi.OrangePiOne method)</a>
 </li>
   </ul></td>
 </tr></table>

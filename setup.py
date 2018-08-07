@@ -8,8 +8,8 @@ setup(
   name='gbj_pythonlib_hw',
   version='1.0.0',
   description='Python libraries for hardware support.',
-  long_description='Modules suitable for utilizing Pi microcomputers \
-in python console applications.',
+  long_description='Modules suitable for utilizing Pi microcomputers, \
+system buses, and sensors in python console applications.',
   classifiers=[
     'Development Status :: 4 - Beta',
     'License :: OSI Approved :: MIT License',

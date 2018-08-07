@@ -4,10 +4,10 @@ gbj\_pythonlib\_hw package
 Submodules
 ----------
 
-gbj\_pythonlib\_hw.cputemp module
----------------------------------
+gbj\_pythonlib\_hw.picomp module
+--------------------------------
 
-.. automodule:: gbj_pythonlib_hw.cputemp
+.. automodule:: gbj_pythonlib_hw.picomp
     :members:
     :undoc-members:
     :show-inheritance:

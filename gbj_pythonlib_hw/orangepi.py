@@ -7,7 +7,7 @@
 - For controlling in-built LEDs their control at the operating system level
   should be set to None.
 """
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __status__ = "Development"
 __author__ = "Libor Gabaj"
 __copyright__ = "Copyright 2018, " + __author__
@@ -131,17 +131,9 @@ class OrangePiOne(PiComputer):
     def pin_off(self, pin):
         """Set pin as OUTPUT and to LOW.
 
-        Arguments
-        ---------
-        pin : str
-            Name of a pin in form either `port` or `connector`.
-            *The argument is mandatory and has no default value.*
-
-        Raises
-        ------
-        NameError
-            Pin name is defined neither among ports nor connectors.
-            Error message included to the exception.
+        See Also
+        --------
+        pin_on : Arguments, Raises are the same, see docstrings.
 
         """
         port_num = self._convert_pin_port(pin)
@@ -151,47 +143,62 @@ class OrangePiOne(PiComputer):
     def pin_toggle(self, pin):
         """Set pin as OUTPUT and invert its state.
 
-        Arguments
-        ---------
-        pin : str
-            Name of a pin in form either `port` or `connector`.
-            *The argument is mandatory and has no default value.*
-
-        Raises
-        ------
-        NameError
-            Pin name is defined neither among ports nor connectors.
-            Error message included to the exception.
+        See Also
+        --------
+        pin_on : Arguments, Raises are the same, see docstrings.
 
         """
         port_num = self._convert_pin_port(pin)
-        port_state = gpio.input(port_num)
-        if port_state == gpio.HIGH:
+        port_state = gpio.HIGH
+        if gpio.input(port_num) == gpio.HIGH:
             port_state = gpio.LOW
-        else:
-            port_state = gpio.HIGH
         gpio.setcfg(port_num, gpio.OUTPUT)
         gpio.output(port_num, port_state)
 
+    def pin_pullup(self, pin):
+        """Set PULLUP of pin.
+
+        See Also
+        --------
+        pin_on : Arguments, Raises are the same, see docstrings.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        gpio.pullup(port_num, gpio.PULLUP)
+
+    def pin_pulldown(self, pin):
+        """Set PULLDOWN of pin.
+
+        See Also
+        --------
+        pin_on : Arguments, Raises are the same, see docstrings.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        gpio.pullup(port_num, gpio.PULLDOWN)
+
+    def pin_pullclear(self, pin):
+        """Reset PULLUP or PULLDOWN of pin.
+
+        See Also
+        --------
+        pin_on : Arguments, Raises are the same, see docstrings.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        gpio.pullup(port_num, 0)
+
     def pin_read(self, pin, mode=gpio.INPUT):
         """Set pin as INTPUT and read its state.
-
-        Arguments
-        ---------
-        pin : str
-            Name of a pin in form either `port` or `connector`.
-            *The argument is mandatory and has no default value.*
 
         Returns
         -------
         pin_state : {gpio.HIGH, gpio.LOW}
             Current state of the pin.
 
-        Raises
-        ------
-        NameError
-            Pin name is defined neither among ports nor connectors.
-            Error message included to the exception.
+        See Also
+        --------
+        pin_on : Arguments, Raises are the same, see docstrings.
 
         """
         port_num = self._convert_pin_port(pin)
@@ -202,22 +209,14 @@ class OrangePiOne(PiComputer):
     def pin_state(self, pin):
         """Return pin state without changing it mode.
 
-        Arguments
-        ---------
-        pin : str
-            Name of a pin in form either `port` or `connector`.
-            *The argument is mandatory and has no default value.*
-
         Returns
         -------
         pin_state : {gpio.HIGH, gpio.LOW}
             Current state of the pin.
 
-        Raises
-        ------
-        NameError
-            Pin name is defined neither among ports nor connectors.
-            Error message included to the exception.
+        See Also
+        --------
+        pin_on : Arguments, Raises are the same, see docstrings.
 
         """
         port_num = self._convert_pin_port(pin)
@@ -247,29 +246,36 @@ class OrangePiOne(PiComputer):
 
         """
         port_num = self._convert_pin_port(pin)
-        value = gpio.input(port_num)
-        return (value == gpio.HIGH)
+        return gpio.input(port_num) == gpio.HIGH
 
     def is_pin_off(self, pin):
         """Return flag about pin state LOW.
 
-        Arguments
-        ---------
-        pin : str
-            Name of a pin in form either `port` or `connector`.
-            *The argument is mandatory and has no default value.*
-
-        Returns
-        -------
-        flag_high : bool
-            Logical flag about pin state HIGH.
-            True if HIGH or False for LOW.
-
-        Raises
-        ------
-        NameError
-            Pin name is defined neither among ports nor connectors.
-            Error message included to the exception.
+        See Also
+        --------
+        is_pin_on : Arguments, Returns, Raises are the same, see docstrings.
 
         """
         return not self.is_pin_on(pin)
+
+    def is_pin_output(self, pin):
+        """Return flag about pin mode OUTPUT.
+
+        See Also
+        --------
+        is_pin_on : Arguments, Returns, Raises are the same, see docstrings.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        return gpio.getcfg(port_num) == gpio.OUTPUT
+
+    def is_pin_input(self, pin):
+        """Return flag about pin mode INPUT.
+
+        See Also
+        --------
+        is_pin_on : Arguments, Returns, Raises are the same, see docstrings.
+
+        """
+        port_num = self._convert_pin_port(pin)
+        return gpio.getcfg(port_num) == gpio.INPUT

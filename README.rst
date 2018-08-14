@@ -3,12 +3,12 @@ gbj_pythonlib_hw
 ****************
 
 This package contains a set of Python modules for supporting hardware within
-python console applications and scripts running usually on Pi microcomputers,
-e.g., Raspberry Pi, Orange Pi, Nano Pi, etc.
+python console applications and scripts running usually on
+**Pi microcomputers**, e.g., ``Raspberry Pi, Orange Pi, Nano Pi``, etc.
 
 The documentation configuration for the package is located in the folder
-`docs/source`. It can be generated from the folder `docs` by the by command
-``make html``.
+`docs/source`. The documentation in HTML format can be generated from
+the folder `docs` by the by command ``make html``.
 
 
 Modules in package
@@ -19,3 +19,7 @@ Modules in package
 
 **orangepi**
   Control GPIOs and system LEDs of Orange Pi microcomputers.
+
+  - For ``Orange Pi One`` the library ``pyA20`` is utilized, which was taken
+    from GitHub repository
+    https://github.com/duxingkei33/orangepi_PC_gpio_pyH3.git.

@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """Module for common fuctionalities of microcomputers of the class Pi.
 
@@ -13,7 +12,7 @@ Focused on microcomputers:
 
 """
 __version__ = "0.1.0"
-__status__ = "Development"
+__status__ = "Testing"
 __author__ = "Libor Gabaj"
 __copyright__ = "Copyright 2018, " + __author__
 __credits__ = []
@@ -35,6 +34,7 @@ class PiComputer(object):
       of Celsius.
     - The microprocesor's temperature sensor provides temperature resolution
       in millicentigrades, which is hardly the same measurement accuracy.
+
     """
 
     def __init__(self):

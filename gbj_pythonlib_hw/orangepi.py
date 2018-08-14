@@ -1,14 +1,14 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """Module for controlling GPIOs of Orange Pi microcomputers.
 
-- The library **orangepi_PC_gpio_pyH3** should be installed:
+- The library **orangepi_PC_gpio_pyH3** should be installed from:
   https://github.com/duxingkei33/orangepi_PC_gpio_pyH3
 - For controlling in-built LEDs their control at the operating system level
-  should be set to None.
+  should be set to `None`.
+
 """
 __version__ = "0.4.0"
-__status__ = "Development"
+__status__ = "Testing"
 __author__ = "Libor Gabaj"
 __copyright__ = "Copyright 2018, " + __author__
 __credits__ = ["https://github.com/duxingkei33"]
@@ -18,7 +18,7 @@ __email__ = "libor.gabaj@gmail.com"
 
 
 import logging
-from picomp import PiComputer
+from .picomp import PiComputer
 from pyA20.gpio import gpio
 from pyA20.gpio import port
 from pyA20.gpio import connector

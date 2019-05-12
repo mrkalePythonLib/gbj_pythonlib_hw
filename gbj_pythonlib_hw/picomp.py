@@ -11,10 +11,10 @@ Focused on microcomputers:
     - Raspberry Pi B
 
 """
-__version__ = "0.1.0"
-__status__ = "Testing"
+__version__ = "0.1.1"
+__status__ = "Beta"
 __author__ = "Libor Gabaj"
-__copyright__ = "Copyright 2018, " + __author__
+__copyright__ = "Copyright 2018-2019, " + __author__
 __credits__ = []
 __license__ = "MIT"
 __maintainer__ = __author__
@@ -95,7 +95,7 @@ class PiComputer(object):
         percentage : float
             System temperature expressed in percentage of temperature
             limit of the system.
-            If some problem occurs with convertion, the None is provided.
+            If some problem occurs with conversion, the None is provided.
 
         """
         try:
@@ -117,7 +117,7 @@ class PiComputer(object):
         -------
         temperature : float
             System temperature in degrees of Celsius.
-            If some problem occurs with convertion, the None is provided.
+            If some problem occurs with conversion, the None is provided.
 
         """
         try:

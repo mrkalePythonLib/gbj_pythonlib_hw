@@ -7,10 +7,10 @@
   should be set to `None`.
 
 """
-__version__ = "0.4.0"
-__status__ = "Testing"
+__version__ = "0.5.0"
+__status__ = "Beta"
 __author__ = "Libor Gabaj"
-__copyright__ = "Copyright 2018, " + __author__
+__copyright__ = "Copyright 2018-2019, " + __author__
 __credits__ = ["https://github.com/duxingkei33"]
 __license__ = "MIT"
 __maintainer__ = __author__
@@ -29,6 +29,15 @@ from pyA20.gpio import connector
 ###############################################################################
 class OrangePiOne(PiComputer):
     """Creating a GPIO manager for microcomputer ``Orange Pi One``.
+
+    Arguments
+    ---------
+    temp_decimals : int
+        Positive integer number of decimal places for rounding temperature
+        value. If None is provided, no rounding occures.
+    perc_decimals : int
+        Positive integer number of decimal places for rounding percentual
+        value. If None is provided, no rounding occures.
 
     Notes
     -----
@@ -63,9 +72,12 @@ class OrangePiOne(PiComputer):
 
     """
 
-    def __init__(self):
+    def __init__(self, temp_decimals=None, perc_decimals=None):
         """Create the class instance - constructor."""
-        super(type(self), self).__init__()
+        super(type(self), self).__init__(
+            temp_decimals=temp_decimals,
+            perc_decimals=perc_decimals
+        )
         self._logger = logging.getLogger(" ".join([__name__, __version__]))
         self._logger.debug("Instance of %s created", self.__class__.__name__)
         gpio.init()

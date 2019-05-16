@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
   name='gbj_pythonlib_hw',
-  version='1.1.0',
+  version='1.2.0',
   description='Python libraries for hardware support.',
   long_description='Modules suitable for utilizing Pi microcomputers, \
 system buses, and sensors in python console applications.',

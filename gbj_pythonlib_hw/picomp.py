@@ -11,7 +11,7 @@ Focused on microcomputers:
     - Raspberry Pi B
 
 """
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 __status__ = "Beta"
 __author__ = "Libor Gabaj"
 __copyright__ = "Copyright 2018-2019, " + __author__
@@ -30,6 +30,17 @@ import logging
 class PiComputer(object):
     """Common Pi computers management.
 
+    Arguments
+    ---------
+    temp_decimals : int
+        Positive integer number of decimal places for rounding temperature
+        value. If None is provided, no rounding occures.
+    perc_decimals : int
+        Positive integer number of decimal places for rounding percentual
+        value. If None is provided, no rounding occures.
+
+    Notes
+    -----
     - All temperature values are expressed in float centigrades, i.e., degrees
       of Celsius.
     - The microprocesor's temperature sensor provides temperature resolution
@@ -37,10 +48,18 @@ class PiComputer(object):
 
     """
 
-    def __init__(self):
+    def __init__(self, temp_decimals=None, perc_decimals=None):
         """Create the class instance - constructor."""
         self._logger = logging.getLogger(" ".join([__name__, __version__]))
         self._logger.debug("Instance of %s created", self.__class__.__name__)
+        try:
+            self._temp_decimals = abs(int(temp_decimals))
+        except TypeError:
+            self._temp_decimals = None
+        try:
+            self._perc_decimals = abs(int(perc_decimals))
+        except TypeError:
+            self._perc_decimals = None
         self._temp_limit = self._read_temperature(
             "/sys/class/thermal/thermal_zone0/trip_point_0_temp"
             )
@@ -53,6 +72,50 @@ class PiComputer(object):
         else:
             return "Temperature {}°C, Limit {}°C"\
                 .format(self.get_temp(), self.get_temperature_limit())
+
+    def _round_temp(self, value):
+        """Round temperature value if needed and possible.
+
+        Arguments
+        ---------
+        value : float
+            Value to be processed.
+            *The argument is mandatory and has no default value.*
+
+        Returns
+        -------
+        float
+            Rouded value, if number of decimal places is defined, otherwise the
+            input value.
+
+        """
+        try:
+            r = round(value, self._temp_decimals)
+        except TypeError:
+            r = value
+        return r
+
+    def _round_perc(self, value):
+        """Round percentage value if needed and possible.
+
+        Arguments
+        ---------
+        value : float
+            Value to be processed.
+            *The argument is mandatory and has no default value.*
+
+        Returns
+        -------
+        float
+            Rouded value, if number of decimal places is defined, otherwise the
+            input value.
+
+        """
+        try:
+            r = round(value, self._perc_decimals)
+        except TypeError:
+            r = value
+        return r
 
     def _read_temperature(self, system_path):
         """Read system file and interpret the content as the temperature.
@@ -102,7 +165,7 @@ class PiComputer(object):
             perc = temperature / self.get_temperature_limit() * 100.0
         except TypeError:
             perc = None
-        return perc
+        return self._round_perc(perc)
 
     def convert_percentage_temperature(self, percentage):
         """Convert percentage of limit to temperature.
@@ -124,7 +187,7 @@ class PiComputer(object):
             temp = percentage * self.get_temperature_limit() / 100.0
         except TypeError:
             temp = None
-        return temp
+        return self._round_temp(temp)
 
     def measure_temperature(self):
         """Measure CPU temperature.
@@ -141,21 +204,7 @@ class PiComputer(object):
             "/sys/class/thermal/thermal_zone0/temp"
         )
         self._logger.debug("Current temperature %s°C", self._temp_current)
-        return self._temp_current
-
-    def measure_temperature_percentage(self):
-        """Return CPU temperature percentage of limit.
-
-        Returns
-        -------
-        percentage : float
-            Current system temperature expressed in percentage of temperature
-            limit of the system.
-            If some problem occurs with reading system file, the None is
-            provided.
-
-        """
-        return self.temp2perc(self.measure())
+        return self._round_temp(self._temp_current)
 
 # -----------------------------------------------------------------------------
 # Getters
@@ -169,7 +218,7 @@ class PiComputer(object):
             Current system temperature limit in degrees of Celsius.
 
         """
-        return self._temp_limit
+        return self._round_temp(self._temp_limit)
 
     def get_temperature(self):
         """Return recently measured CPU temperature.
@@ -181,17 +230,4 @@ class PiComputer(object):
             Useful for repeating calling with ensured same value.
 
         """
-        return self._temp_current
-
-    def get_temperature_percentage(self):
-        """Return recently measured CPU temperature percentage of limit.
-
-        Returns
-        -------
-        percentage : float
-            Recently measured system temperature expressed in percentage of
-            temperature limit of a system.
-            Useful for repeating calling with ensured same value.
-
-        """
-        return self.temp2perc(self.get_temp())
+        return self._round_temp(self._temp_current)

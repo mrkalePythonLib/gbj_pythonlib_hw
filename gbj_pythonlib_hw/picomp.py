@@ -73,7 +73,7 @@ class PiComputer(object):
             return "Temperature {}°C, Limit {}°C"\
                 .format(self.get_temp(), self.get_temperature_limit())
 
-    def _round_temp(self, value):
+    def round_temp(self, value):
         """Round temperature value if needed and possible.
 
         Arguments
@@ -95,7 +95,7 @@ class PiComputer(object):
             r = value
         return r
 
-    def _round_perc(self, value):
+    def round_perc(self, value):
         """Round percentage value if needed and possible.
 
         Arguments
@@ -165,7 +165,7 @@ class PiComputer(object):
             perc = temperature / self.get_temperature_limit() * 100.0
         except TypeError:
             perc = None
-        return self._round_perc(perc)
+        return self.round_perc(perc)
 
     def convert_percentage_temperature(self, percentage):
         """Convert percentage of limit to temperature.
@@ -187,7 +187,7 @@ class PiComputer(object):
             temp = percentage * self.get_temperature_limit() / 100.0
         except TypeError:
             temp = None
-        return self._round_temp(temp)
+        return self.round_temp(temp)
 
     def measure_temperature(self):
         """Measure CPU temperature.
@@ -204,7 +204,7 @@ class PiComputer(object):
             "/sys/class/thermal/thermal_zone0/temp"
         )
         self._logger.debug("Current temperature %s°C", self._temp_current)
-        return self._round_temp(self._temp_current)
+        return self.round_temp(self._temp_current)
 
 # -----------------------------------------------------------------------------
 # Getters
@@ -218,7 +218,7 @@ class PiComputer(object):
             Current system temperature limit in degrees of Celsius.
 
         """
-        return self._round_temp(self._temp_limit)
+        return self.round_temp(self._temp_limit)
 
     def get_temperature(self):
         """Return recently measured CPU temperature.
@@ -230,4 +230,4 @@ class PiComputer(object):
             Useful for repeating calling with ensured same value.
 
         """
-        return self._round_temp(self._temp_current)
+        return self.round_temp(self._temp_current)

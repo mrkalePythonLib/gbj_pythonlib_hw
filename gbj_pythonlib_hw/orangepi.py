@@ -7,7 +7,7 @@
   should be set to `None`.
 
 """
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 __status__ = "Beta"
 __author__ = "Libor Gabaj"
 __copyright__ = "Copyright 2018-2019, " + __author__
@@ -18,7 +18,6 @@ __email__ = "libor.gabaj@gmail.com"
 
 
 import logging
-from .picomp import PiComputer
 from pyA20.gpio import gpio
 from pyA20.gpio import port
 from pyA20.gpio import connector
@@ -27,7 +26,7 @@ from pyA20.gpio import connector
 ###############################################################################
 # Classes
 ###############################################################################
-class OrangePiOne(PiComputer):
+class OrangePiOne(object):
     """Creating a GPIO manager for microcomputer ``Orange Pi One``.
 
     Arguments

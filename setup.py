@@ -6,14 +6,16 @@ from setuptools import setup
 
 setup(
   name='gbj_pythonlib_hw',
-  version='1.2.0',
+  version='1.3.0',
   description='Python libraries for hardware support.',
-  long_description='Modules suitable for utilizing Pi microcomputers, \
-system buses, and sensors in python console applications.',
+  long_description=(
+    'Modules suitable for utilizing Pi microcomputers,'
+    'system buses, and sensors in python console applications.'
+  ),
   classifiers=[
     'Development Status :: 4 - Beta',
     'License :: OSI Approved :: MIT License',
-    'Programming Language :: Python :: 3.5 :: 2.7',
+    'Programming Language :: Python :: 3.7 :: 2.7',
     'Topic :: System :: Monitoring',
   ],
   keywords='pi, orangepi, raspberrypi, nanopi',

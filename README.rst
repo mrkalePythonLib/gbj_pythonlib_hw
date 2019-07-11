@@ -17,9 +17,6 @@ python console applications and scripts running usually on
 Modules in package
 ==================
 
-**picomp**
-  Common fuctionalities of microcomputers of the class Pi.
-
 **orangepi**
   Control GPIOs and system LEDs of Orange Pi microcomputers.
 

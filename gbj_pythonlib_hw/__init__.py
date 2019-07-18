@@ -4,4 +4,7 @@
 - orangepi
 
 """
+from pyA20.gpio import gpio
+from pyA20.gpio import port
+from pyA20.gpio import connector
 from . import orangepi as orangepi

@@ -7,7 +7,7 @@
   should be set to `None`.
 
 """
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 __status__ = "Beta"
 __author__ = "Libor Gabaj"
 __copyright__ = "Copyright 2018-2019, " + __author__
@@ -18,9 +18,7 @@ __email__ = "libor.gabaj@gmail.com"
 
 
 import logging
-from pyA20.gpio import gpio
-from pyA20.gpio import port
-from pyA20.gpio import connector
+from . import gpio, port, connector
 
 
 ###############################################################################
@@ -85,20 +83,11 @@ class OrangePiOne(object):
         ---------
         pin : str
             Name of a pin in form of either ``port`` or ``connector``.
-            *The argument is mandatory and has no default value.*
 
         Returns
         -------
         portnum : int
-            SoC port number of the pin.
-
-        Raises
-        ------
-        NameError
-            Pin name is defined neither among ports nor connectors of
-            the system. Usually the pin name is a typo or belongs to another
-            microcomputer.
-            Exception is raised with error message.
+            SoC port number (offset) of the pin or 0.
 
         """
         if pin in dir(port):
@@ -108,8 +97,7 @@ class OrangePiOne(object):
         else:
             errmsg = "Unknown pin {}".format(pin)
             self._logger.error(errmsg)
-            raise NameError(errmsg)
-        self._logger.debug("Converted pin %s to port %s", pin, port_num)
+            return 0
         return port_num
 
     def pin_on(self, pin):
@@ -119,7 +107,6 @@ class OrangePiOne(object):
         ---------
         pin : str
             Name of a pin in form either `port` or `connector`.
-            *The argument is mandatory and has no default value.*
 
         Raises
         ------
@@ -129,8 +116,9 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        gpio.setcfg(port_num, gpio.OUTPUT)
-        gpio.output(port_num, gpio.HIGH)
+        if port_num:
+            gpio.setcfg(port_num, gpio.OUTPUT)
+            gpio.output(port_num, gpio.HIGH)
 
     def pin_off(self, pin):
         """Set pin as OUTPUT and to LOW.
@@ -141,8 +129,9 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        gpio.setcfg(port_num, gpio.OUTPUT)
-        gpio.output(port_num, gpio.LOW)
+        if port_num:
+            gpio.setcfg(port_num, gpio.OUTPUT)
+            gpio.output(port_num, gpio.LOW)
 
     def pin_toggle(self, pin):
         """Set pin as OUTPUT and invert its state.
@@ -153,11 +142,12 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        port_state = gpio.HIGH
-        if gpio.input(port_num) == gpio.HIGH:
-            port_state = gpio.LOW
-        gpio.setcfg(port_num, gpio.OUTPUT)
-        gpio.output(port_num, port_state)
+        if port_num:
+            port_state = gpio.HIGH
+            if gpio.input(port_num) == gpio.HIGH:
+                port_state = gpio.LOW
+            gpio.setcfg(port_num, gpio.OUTPUT)
+            gpio.output(port_num, port_state)
 
     def pin_pullup(self, pin):
         """Set PULLUP of pin.
@@ -168,7 +158,8 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        gpio.pullup(port_num, gpio.PULLUP)
+        if port_num:
+            gpio.pullup(port_num, gpio.PULLUP)
 
     def pin_pulldown(self, pin):
         """Set PULLDOWN of pin.
@@ -190,15 +181,16 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        gpio.pullup(port_num, 0)
+        if port_num:
+            gpio.pullup(port_num, gpio.PULLNONE)
 
     def pin_read(self, pin, mode=gpio.INPUT):
-        """Set pin as INTPUT and read its state.
+        """Set pin as INPUT and read its state.
 
         Returns
         -------
         pin_state : {gpio.HIGH, gpio.LOW}
-            Current state of the pin.
+            Current state of the pin or None
 
         See Also
         --------
@@ -206,17 +198,18 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        gpio.setcfg(port_num, gpio.INTPUT)
-        value = gpio.input(port_num)
-        return value
+        if port_num:
+            gpio.setcfg(port_num, gpio.INTPUT)
+            value = gpio.input(port_num)
+            return value
 
     def pin_state(self, pin):
-        """Return pin state without changing it mode.
+        """Return pin state without changing its mode.
 
         Returns
         -------
         pin_state : {gpio.HIGH, gpio.LOW}
-            Current state of the pin.
+            Current state of the pin or None
 
         See Also
         --------
@@ -224,8 +217,9 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        value = gpio.input(port_num)
-        return value
+        if port_num:
+            value = gpio.input(port_num)
+            return value
 
     def is_pin_on(self, pin):
         """Return flag about pin state HIGH.
@@ -239,7 +233,7 @@ class OrangePiOne(object):
         Returns
         -------
         flag_high : bool
-            Logical flag about pin state HIGH.
+            Logical flag about pin state HIGH or None.
             True if HIGH or False for LOW.
 
         Raises
@@ -250,7 +244,8 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        return gpio.input(port_num) == gpio.HIGH
+        if port_num:
+            return gpio.input(port_num) == gpio.HIGH
 
     def is_pin_off(self, pin):
         """Return flag about pin state LOW.
@@ -271,7 +266,8 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        return gpio.getcfg(port_num) == gpio.OUTPUT
+        if port_num:
+            return gpio.getcfg(port_num) == gpio.OUTPUT
 
     def is_pin_input(self, pin):
         """Return flag about pin mode INPUT.
@@ -282,4 +278,5 @@ class OrangePiOne(object):
 
         """
         port_num = self._convert_pin_port(pin)
-        return gpio.getcfg(port_num) == gpio.INPUT
+        if port_num:
+            return gpio.getcfg(port_num) == gpio.INPUT
